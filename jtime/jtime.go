@@ -29,6 +29,9 @@ func (t *JsonTime) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (t JsonTime) MarshalJSON() ([]byte, error) {
+	if t.Time.IsZero() {
+		return []byte(""), nil
+	}
 	formatted := fmt.Sprintf("\"%s\"", t.Format(TimeFormat))
 	return []byte(formatted), nil
 }
