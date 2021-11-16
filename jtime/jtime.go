@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	TimeFormat = "2006-01-02 15:04:05"
+	JsonTimeFormat = "2006-01-02 15:04:05"
 )
 
 type JsonTime time.Time
@@ -24,19 +24,19 @@ func (t JsonTime) String() string {
 	if t.GetTime().IsZero() {
 		return ""
 	}
-	return t.GetTime().Format(TimeFormat)
+	return t.GetTime().Format(JsonTimeFormat)
 }
 
 func (t *JsonTime) UnmarshalJSON(data []byte) (err error) {
-	now, err := time.ParseInLocation(`"`+TimeFormat+`"`, string(data), time.Local)
+	now, err := time.ParseInLocation(`"`+JsonTimeFormat+`"`, string(data), time.Local)
 	*t = JsonTime(now)
 	return
 }
 
 func (t JsonTime) MarshalText() (text []byte, err error) {
-	b := make([]byte, 0, len(TimeFormat))
+	b := make([]byte, 0, len(JsonTimeFormat))
 	//b = append(b, '"')
-	b = time.Time(t).AppendFormat(b, TimeFormat)
+	b = time.Time(t).AppendFormat(b, JsonTimeFormat)
 	//b = append(b, '"')
 	if string(b) == `0001-01-01 00:00:00` {
 		b = []byte(``)
