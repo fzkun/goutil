@@ -14,6 +14,12 @@ type JsonTime struct {
 	time.Time
 }
 
+func NewNowJsonTime() JsonTime {
+	return JsonTime{
+		Time: time.Now(),
+	}
+}
+
 func (t *JsonTime) UnmarshalJSON(data []byte) (err error) {
 	now, err := time.ParseInLocation(`"`+TimeFormat+`"`, string(data), time.Local)
 	*t = JsonTime{
