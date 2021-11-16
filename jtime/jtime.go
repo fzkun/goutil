@@ -10,44 +10,52 @@ const (
 	TimeFormat = "2006-01-02 15:04:05"
 )
 
-type JsonTime struct {
-	time.Time
-}
+type JsonTime time.Time
 
 func NewNowJsonTime() JsonTime {
-	return JsonTime{
-		Time: time.Now(),
+	return JsonTime(time.Now())
+}
+
+func (t JsonTime) GetTime() time.Time {
+	return time.Time(t)
+}
+
+func (t JsonTime) String() string {
+	if t.GetTime().IsZero() {
+		return ""
 	}
+	return t.GetTime().Format(TimeFormat)
 }
 
 func (t *JsonTime) UnmarshalJSON(data []byte) (err error) {
 	now, err := time.ParseInLocation(`"`+TimeFormat+`"`, string(data), time.Local)
-	*t = JsonTime{
-		now,
-	}
+	*t = JsonTime(now)
 	return
 }
 
-func (t JsonTime) MarshalJSON() ([]byte, error) {
-	if t.Time.IsZero() {
-		return []byte(""), nil
+func (t JsonTime) MarshalText() (text []byte, err error) {
+	b := make([]byte, 0, len(TimeFormat))
+	//b = append(b, '"')
+	b = time.Time(t).AppendFormat(b, TimeFormat)
+	//b = append(b, '"')
+	if string(b) == `0001-01-01 00:00:00` {
+		b = []byte(``)
 	}
-	formatted := fmt.Sprintf("\"%s\"", t.Format(TimeFormat))
-	return []byte(formatted), nil
+	return b, nil
 }
 
 func (t JsonTime) Value() (driver.Value, error) {
 	var zeroTime time.Time
-	if t.Time.UnixNano() == zeroTime.UnixNano() {
+	if t.GetTime().UnixNano() == zeroTime.UnixNano() {
 		return nil, nil
 	}
-	return t.Time, nil
+	return t.GetTime(), nil
 }
 
 func (t *JsonTime) Scan(v interface{}) error {
 	value, ok := v.(time.Time)
 	if ok {
-		*t = JsonTime{Time: value}
+		*t = JsonTime(value)
 		return nil
 	}
 	return fmt.Errorf("can not convert %v to timestamp", v)

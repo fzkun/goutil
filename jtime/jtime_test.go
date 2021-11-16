@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
-	"time"
 )
 
 type JT struct {
@@ -13,7 +12,7 @@ type JT struct {
 
 func TestJsonTime_UnmarshalJSON(b *testing.T) {
 
-	var t = JT{JsonTime{time.Now()}}
+	var t = JT{NewNowJsonTime()}
 	fmt.Printf("系统默认的时间格式: %s \n", t.Tm)
 
 	bt, err := json.Marshal(t)
@@ -29,4 +28,15 @@ func TestJsonTime_UnmarshalJSON(b *testing.T) {
 	}
 
 	fmt.Printf("转换成系统默认格式: %s \n", t.Tm)
+}
+
+func TestZeroTime(t *testing.T) {
+	var j JsonTime
+	marshal, err := json.Marshal(j)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(string(marshal))
+	var text string
+	fmt.Println(text)
 }
