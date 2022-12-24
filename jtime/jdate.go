@@ -28,6 +28,9 @@ func (t JsonDate) String() string {
 }
 
 func (t *JsonDate) UnmarshalJSON(data []byte) (err error) {
+	if string(data) == "null" {
+		return
+	}
 	now, err := time.ParseInLocation(`"`+JsonDateFormat+`"`, string(data), time.Local)
 	*t = JsonDate(now)
 	return

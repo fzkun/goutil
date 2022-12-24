@@ -40,3 +40,15 @@ func TestZeroTime(t *testing.T) {
 	var text string
 	fmt.Println(text)
 }
+
+func TestNullTime(t *testing.T) {
+	var (
+		ti JT
+	)
+	jsonStr := `{"tm":null}`
+	err := json.Unmarshal([]byte(jsonStr), &ti)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(fmt.Sprintf("%+v", ti))
+}
