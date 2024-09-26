@@ -7,9 +7,11 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/tidwall/gjson v1.17.3
 	go.uber.org/zap v1.27.0
+	gopkg.in/olahol/melody.v1 v1.0.0-20170518105555-d52139073376
 )
 
 require (
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
