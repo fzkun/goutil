@@ -1,7 +1,7 @@
 package goutil
 
 import (
-	"gopkg.in/olahol/melody.v1"
+	"github.com/olahol/melody"
 	"net"
 	"strings"
 )
@@ -9,6 +9,7 @@ import (
 // ClientWebsocketRemoteAddress ws获取远程地址(不标准:proxyIp+:+localPort)
 func ClientWebsocketRemoteAddress(session *melody.Session) string {
 	ip := ClientWebsocketIP(session)
+	session.RemoteAddr()
 	strs := strings.Split(session.Request.RemoteAddr, ":")
 	if len(strs) < 1 {
 		return ip

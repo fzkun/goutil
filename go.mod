@@ -4,10 +4,10 @@ go 1.20
 
 require (
 	github.com/go-resty/resty/v2 v2.14.0
+	github.com/olahol/melody v1.2.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/tidwall/gjson v1.17.3
 	go.uber.org/zap v1.27.0
-	gopkg.in/olahol/melody.v1 v1.0.0-20170518105555-d52139073376
 )
 
 require (
